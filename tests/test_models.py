@@ -4,11 +4,21 @@ from datetime import date, datetime
 
 import pytest
 
-from email_summarizer.models import (Attachment, CleanedEmail, Config,
-                                     Credentials, EmailSummary, Feedback,
-                                     FetchRules, OAuthConfig, PrivacyConfig,
-                                     RawEmail, ServerConfig, StorageConfig,
-                                     SummarizerConfig)
+from email_summarizer.models import (
+    Attachment,
+    CleanedEmail,
+    Config,
+    Credentials,
+    EmailSummary,
+    Feedback,
+    FetchRules,
+    OAuthConfig,
+    PrivacyConfig,
+    RawEmail,
+    ServerConfig,
+    StorageConfig,
+    SummarizerConfig,
+)
 
 
 class TestOAuthConfig:

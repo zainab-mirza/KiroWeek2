@@ -7,9 +7,15 @@ from typing import Any, Dict, Optional
 import keyring
 import yaml
 
-from email_summarizer.models import (Config, FetchRules, OAuthConfig,
-                                     PrivacyConfig, ServerConfig,
-                                     StorageConfig, SummarizerConfig)
+from email_summarizer.models import (
+    Config,
+    FetchRules,
+    OAuthConfig,
+    PrivacyConfig,
+    ServerConfig,
+    StorageConfig,
+    SummarizerConfig,
+)
 
 
 class ConfigManager:
