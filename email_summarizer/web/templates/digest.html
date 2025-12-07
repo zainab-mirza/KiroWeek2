@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Digest - Email Summarizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .dry-run-indicator {
+            display: none;
+            background: #f39c12;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .dry-run-indicator.active {
+            display: block;
+        }
+
+        .filters {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .summaries {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .summary-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .summary-meta {
+            flex: 1;
+        }
+
+        .sender {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .subject {
+            font-size: 18px;
+            font-weight: 500;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .date {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .summary-text {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .actions-section {
+            margin-bottom: 15px;
+        }
+
+        .actions-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .actions-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .actions-list li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .actions-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+        }
+
+        .deadlines-section {
+            margin-bottom: 15px;
+        }
+
+        .deadlines-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .deadline {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            margin-right: 8px;
+        }
+
+        .summary-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .feedback-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .feedback-btn {
+            background: none;
+            border: 2px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .feedback-btn:hover {
+            border-color: #3498db;
+        }
+
+        .feedback-btn.active-up {
+            border-color: #27ae60;
+            background: #27ae60;
+            color: white;
+        }
+
+        .feedback-btn.active-down {
+            border-color: #e74c3c;
+            background: #e74c3c;
+            color: white;
+        }
+
+        .open-email-link {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .open-email-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .empty-state h2 {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #95a5a6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .summary-header {
+                flex-direction: column;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📧 Email Digest</h1>
+            <p>Your AI-powered email summaries</p>
+            <div class="controls">
+                <button class="btn-primary" onclick="processEmails()">Process Emails</button>
+                <button class="btn-secondary" onclick="toggleDryRun()">Toggle Dry-Run</button>
+                <button class="btn-secondary" onclick="openConfig()">Settings</button>
+                <button class="btn-danger" onclick="eraseData()">Erase All Data</button>
+            </div>
+        </header>
+
+        <div class="dry-run-indicator" id="dryRunIndicator">
+            🔍 DRY-RUN MODE ACTIVE - No changes will be saved
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <input type="text" id="searchInput" placeholder="Search by sender or subject..." onkeyup="filterSummaries()">
+                <select id="filterActions" onchange="filterSummaries()">
+                    <option value="all">All Emails</option>
+                    <option value="has-actions">Has Actions</option>
+                    <option value="has-deadlines">Has Deadlines</option>
+                </select>
+                <input type="date" id="filterDate" onchange="filterSummaries()">
+            </div>
+        </div>
+
+        <div id="summariesContainer" class="summaries">
+            <div class="loading">Loading summaries...</div>
+        </div>
+    </div>
+
+    <script>
+        let summaries = [];
+        let dryRunMode = false;
+
+        // Load summaries on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSummaries();
+        });
+
+        async function loadSummaries() {
+            try {
+                const response = await fetch('/api/summaries');
+                if (!response.ok) throw new Error('Failed to load summaries');
+                
+                summaries = await response.json();
+                renderSummaries(summaries);
+            } catch (error) {
+                console.error('Error loading summaries:', error);
+                document.getElementById('summariesContainer').innerHTML = `
+                    <div class="empty-state">
+                        <h2>Error Loading Summaries</h2>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderSummaries(summariesToRender) {
+            const container = document.getElementById('summariesContainer');
+            
+            if (summariesToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No Summaries Yet</h2>
+                        <p>Click "Process Emails" to fetch and summarize your emails</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = summariesToRender.map(summary => `
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <div class="summary-meta">
+                            <div class="sender">${escapeHtml(summary.sender)}</div>
+                            <div class="subject">${escapeHtml(summary.subject)}</div>
+                            <div class="date">${formatDate(summary.received_at)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-text">
+                        ${escapeHtml(summary.summary)}
+                    </div>
+                    
+                    ${summary.actions && summary.actions.length > 0 ? `
+                        <div class="actions-section">
+                            <div class="actions-title">Action Items:</div>
+                            <ul class="actions-list">
+                                ${summary.actions.map(action => `<li>${escapeHtml(action)}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    
+                    ${summary.deadlines && summary.deadlines.length > 0 ? `
+                        <div class="deadlines-section">
+                            <div class="deadlines-title">Deadlines:</div>
+                            ${summary.deadlines.map(deadline => `<span class="deadline">📅 ${deadline}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="summary-footer">
+                        <div class="feedback-buttons">
+                            <button class="feedback-btn ${summary.feedback?.rating === 1 ? 'active-up' : ''}" 
+                                    onclick="submitFeedback('${summary.message_id}', 1)">
+                                👍 Helpful
+                            </button>
+                            <button class="feedback-btn ${summary.feedback?.rating === -1 ? 'active-down' : ''}" 
+                                    onclick="submitFeedback('${summary.message_id}', -1)">
+                                👎 Not Helpful
+                            </button>
+                        </div>
+                        <a href="mailto:${summary.sender}?subject=Re: ${encodeURIComponent(summary.subject)}" 
+                           class="open-email-link">
+                            Open in Email Client →
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function processEmails() {
+            const button = event.target;
+            button.disabled = true;
+            button.textContent = 'Processing...';
+            
+            try {
+                const response = await fetch('/api/process', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dry_run: dryRunMode })
+                });
+                
+                if (!response.ok) throw new Error('Processing failed');
+                
+                const result = await response.json();
+                alert(`Processed ${result.total_processed} of ${result.total_fetched} emails`);
+                
+                await loadSummaries();
+            } catch (error) {
+                console.error('Error processing emails:', error);
+                alert('Error processing emails: ' + error.message);
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Process Emails';
+            }
+        }
+
+        function toggleDryRun() {
+            dryRunMode = !dryRunMode;
+            const indicator = document.getElementById('dryRunIndicator');
+            indicator.classList.toggle('active', dryRunMode);
+        }
+
+        async function submitFeedback(messageId, rating) {
+            try {
+                const response = await fetch(`/api/summaries/${messageId}/feedback`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rating })
+                });
+                
+                if (!response.ok) throw new Error('Failed to submit feedback');
+                
+                await loadSummaries();
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+                alert('Error submitting feedback: ' + error.message);
+            }
+        }
+
+        function filterSummaries() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const actionFilter = document.getElementById('filterActions').value;
+            const dateFilter = document.getElementById('filterDate').value;
+            
+            let filtered = summaries.filter(summary => {
+                // Search filter
+                const matchesSearch = !searchTerm || 
+                    summary.sender.toLowerCase().includes(searchTerm) ||
+                    summary.subject.toLowerCase().includes(searchTerm);
+                
+                // Action filter
+                const matchesActions = actionFilter === 'all' ||
+                    (actionFilter === 'has-actions' && summary.actions?.length > 0) ||
+                    (actionFilter === 'has-deadlines' && summary.deadlines?.length > 0);
+                
+                // Date filter
+                const matchesDate = !dateFilter || 
+                    summary.received_at.startsWith(dateFilter);
+                
+                return matchesSearch && matchesActions && matchesDate;
+            });
+            
+            renderSummaries(filtered);
+        }
+
+        function openConfig() {
+            window.location.href = '/config';
+        }
+
+        async function eraseData() {
+            if (!confirm('Are you sure you want to erase all data? This cannot be undone.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/data', { method: 'DELETE' });
+                if (!response.ok) throw new Error('Failed to erase data');
+                
+                alert('All data has been erased');
+                await loadSummaries();
+            } catch (error) {
+                console.error('Error erasing data:', error);
+                alert('Error erasing data: ' + error.message);
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Consent - Email Summarizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .consent-form {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .checkbox-group {
+            margin: 20px 0;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: start;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-primary:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Privacy Consent Required</h1>
+        
+        <p>You have configured Email Summarizer to use a remote LLM service for email summarization. Before proceeding, please review the following information and provide your consent.</p>
+        
+        <div class="warning">
+            <strong>⚠️ Important:</strong> Using a remote LLM means your email content will be sent to a third-party service for processing.
+        </div>
+        
+        <h2>What Data is Shared?</h2>
+        <p>When using a remote LLM, the following information from your emails will be sent to the service provider:</p>
+        <ul>
+            <li>Email subject lines</li>
+            <li>Email body content (cleaned and truncated)</li>
+            <li>Sender information</li>
+            <li>Attachment filenames (not the actual files)</li>
+            <li>Email dates</li>
+        </ul>
+        
+        <h2>What is NOT Shared?</h2>
+        <ul>
+            <li>Your OAuth credentials or access tokens</li>
+            <li>Attachment file contents</li>
+            <li>Your email password</li>
+            <li>Any data stored locally on your machine</li>
+        </ul>
+        
+        <h2>Privacy Considerations</h2>
+        <ul>
+            <li>The remote LLM provider may log requests for debugging and improvement purposes</li>
+            <li>Data transmission occurs over encrypted HTTPS connections</li>
+            <li>You should review the privacy policy of your chosen LLM provider</li>
+            <li>Sensitive or confidential emails should not be processed if you have concerns</li>
+        </ul>
+        
+        <div class="info">
+            <strong>💡 Alternative:</strong> You can switch to a local model for fully private processing. Local models run entirely on your machine and never send data externally. Configure this in the settings.
+        </div>
+        
+        <h2>Your Rights</h2>
+        <ul>
+            <li>You can revoke this consent at any time in the settings</li>
+            <li>You can switch to local processing at any time</li>
+            <li>You can delete all stored summaries using the "Erase All Data" feature</li>
+        </ul>
+        
+        <div class="consent-form">
+            <h2>Consent Form</h2>
+            
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="understandCheckbox">
+                    <span>I understand that my email content will be sent to a third-party LLM service for processing</span>
+                </label>
+            </div>
+            
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="reviewedCheckbox">
+                    <span>I have reviewed the privacy policy of my chosen LLM provider</span>
+                </label>
+            </div>
+            
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="consentCheckbox">
+                    <span>I consent to sending my email content to the remote LLM service for summarization</span>
+                </label>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn-primary" id="acceptButton" disabled onclick="acceptConsent()">
+                    Accept and Continue
+                </button>
+                <button class="btn-secondary" onclick="declineConsent()">
+                    Decline
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const checkboxes = [
+            document.getElementById('understandCheckbox'),
+            document.getElementById('reviewedCheckbox'),
+            document.getElementById('consentCheckbox')
+        ];
+        const acceptButton = document.getElementById('acceptButton');
+        
+        // Enable accept button only when all checkboxes are checked
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const allChecked = checkboxes.every(cb => cb.checked);
+                acceptButton.disabled = !allChecked;
+            });
+        });
+        
+        async function acceptConsent() {
+            try {
+                const response = await fetch('/api/consent', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ consent: true })
+                });
+                
+                if (response.ok) {
+                    window.location.href = '/';
+                } else {
+                    alert('Error saving consent. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error saving consent. Please try again.');
+            }
+        }
+        
+        function declineConsent() {
+            if (confirm('Without consent, you cannot use remote LLM services. Would you like to configure a local model instead?')) {
+                window.location.href = '/config';
+            } else {
+                window.location.href = '/';
+            }
+        }
+    </script>
+</body>
+</html>

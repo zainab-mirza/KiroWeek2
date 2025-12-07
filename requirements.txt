@@ -1,0 +1,29 @@
+# Web Framework
+Flask>=3.0.0
+Werkzeug>=3.0.0
+
+# OAuth and Email APIs
+google-auth-oauthlib>=1.2.0
+google-api-python-client>=2.110.0
+msal>=1.26.0
+
+# HTML Processing
+beautifulsoup4>=4.12.0
+lxml>=5.0.0
+
+# Encryption
+cryptography>=41.0.0
+keyring>=24.3.0
+
+# AI/ML
+transformers>=4.36.0
+torch>=2.1.0
+openai>=1.6.0
+
+# Data and Config
+pyyaml>=6.0.1
+
+# Testing
+hypothesis>=6.92.0
+pytest>=7.4.0
+pytest-cov>=4.1.0

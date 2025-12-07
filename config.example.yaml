@@ -1,0 +1,42 @@
+# Email Summarizer Configuration Example
+# Copy this file to ~/.email-summarizer/config.yaml and customize
+
+email_provider: gmail  # or "outlook"
+
+oauth:
+  client_id_ref: "keyring:oauth_client_id"
+  client_secret_ref: "keyring:oauth_client_secret"
+  redirect_uri: "http://localhost:8080/oauth2callback"
+  scopes:
+    - "gmail.readonly"  # For Gmail
+    # - "Mail.Read"     # For Outlook
+
+fetch_rules:
+  mode: unread  # "unread", "last_n_days", or "all"
+  max_messages: 20
+  days_back: 7  # Used when mode is "last_n_days"
+
+summarizer:
+  engine: remote  # "local" or "remote"
+  
+  # For local engine:
+  local_model: "facebook/bart-large-cnn"
+  
+  # For remote engine:
+  remote_provider: "openai"
+  remote_api_key_ref: "keyring:openai_api_key"
+  
+  max_input_tokens: 512
+
+server:
+  port: 8080
+  host: "localhost"
+
+storage:
+  summaries_dir: "~/.email-summarizer/summaries"
+  encrypt_bodies: true
+  use_sqlite_index: true
+
+privacy:
+  remote_llm_consent: false  # Set to true after reviewing consent
+  log_rotation_days: 7
