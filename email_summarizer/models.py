@@ -1,9 +1,9 @@
 """Core data models for the Email Summarizer application."""
 
 from dataclasses import dataclass, field
-from datetime import datetime, date
-from typing import List, Optional
+from datetime import date, datetime
 from enum import Enum
+from typing import List, Optional
 
 
 class EmailProvider(Enum):

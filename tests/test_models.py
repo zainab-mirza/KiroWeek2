@@ -1,22 +1,14 @@
 """Tests for data models."""
 
+from datetime import date, datetime
+
 import pytest
-from datetime import datetime, date
-from email_summarizer.models import (
-    Config,
-    OAuthConfig,
-    FetchRules,
-    SummarizerConfig,
-    ServerConfig,
-    StorageConfig,
-    PrivacyConfig,
-    Credentials,
-    RawEmail,
-    CleanedEmail,
-    EmailSummary,
-    Feedback,
-    Attachment,
-)
+
+from email_summarizer.models import (Attachment, CleanedEmail, Config,
+                                     Credentials, EmailSummary, Feedback,
+                                     FetchRules, OAuthConfig, PrivacyConfig,
+                                     RawEmail, ServerConfig, StorageConfig,
+                                     SummarizerConfig)
 
 
 class TestOAuthConfig:

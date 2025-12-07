@@ -4,9 +4,12 @@ import base64
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from typing import List
-from googleapiclient.discovery import build
-from email_summarizer.models import Credentials, FetchRules, RawEmail, Attachment
+
 import requests
+from googleapiclient.discovery import build
+
+from email_summarizer.models import (Attachment, Credentials, FetchRules,
+                                     RawEmail)
 
 
 class EmailFetcher(ABC):
@@ -73,7 +76,8 @@ class GmailFetcher(EmailFetcher):
     def _get_service(self):
         """Get or create Gmail API service."""
         if self.service is None:
-            from google.oauth2.credentials import Credentials as GoogleCredentials
+            from google.oauth2.credentials import \
+                Credentials as GoogleCredentials
 
             google_creds = GoogleCredentials(
                 token=self.credentials.access_token,

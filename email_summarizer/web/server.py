@@ -1,13 +1,15 @@
 """Flask web server for Email Summarizer."""
 
 import logging
-from pathlib import Path
-from flask import Flask, render_template, jsonify, request, redirect
 from datetime import datetime
+from pathlib import Path
+
+from flask import Flask, jsonify, redirect, render_template, request
+
+from email_summarizer.auth import OAuthAuthenticator
 from email_summarizer.models import Feedback
 from email_summarizer.orchestrator import EmailOrchestrator
 from email_summarizer.storage import StorageManager
-from email_summarizer.auth import OAuthAuthenticator
 
 logger = logging.getLogger(__name__)
 

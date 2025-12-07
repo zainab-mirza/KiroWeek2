@@ -2,16 +2,13 @@
 
 import logging
 from typing import List
-from email_summarizer.models import (
-    Config,
-    ProcessingResult,
-    ProcessingError,
-    EmailSummary,
-)
+
 from email_summarizer.fetcher import EmailFetcher
+from email_summarizer.models import (Config, EmailSummary, ProcessingError,
+                                     ProcessingResult)
 from email_summarizer.preprocessor import EmailPreprocessor
-from email_summarizer.summarizer import SummarizerEngine
 from email_summarizer.storage import StorageManager
+from email_summarizer.summarizer import SummarizerEngine
 
 logger = logging.getLogger(__name__)
 

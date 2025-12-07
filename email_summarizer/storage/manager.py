@@ -1,13 +1,14 @@
 """Storage management for email summaries."""
 
 import json
-import sqlite3
 import logging
+import sqlite3
+from datetime import date, datetime
 from pathlib import Path
-from datetime import datetime, date
-from typing import Optional, List
-from email_summarizer.models import EmailSummary, Feedback, StorageConfig
+from typing import List, Optional
+
 from email_summarizer.crypto import get_encryption_manager
+from email_summarizer.models import EmailSummary, Feedback, StorageConfig
 
 logger = logging.getLogger(__name__)
 

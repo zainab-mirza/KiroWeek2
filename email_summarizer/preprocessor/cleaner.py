@@ -1,9 +1,11 @@
 """Email preprocessing and cleaning."""
 
-import re
 import logging
+import re
+
 from bs4 import BeautifulSoup
-from email_summarizer.models import RawEmail, CleanedEmail
+
+from email_summarizer.models import CleanedEmail, RawEmail
 
 logger = logging.getLogger(__name__)
 

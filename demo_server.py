@@ -1,8 +1,9 @@
 """Demo server for Email Summarizer - runs without full dependencies."""
 
-from flask import Flask, render_template, jsonify, request
-from datetime import datetime
 import json
+from datetime import datetime
+
+from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__, template_folder="email_summarizer/web/templates")
 

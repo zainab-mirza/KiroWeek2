@@ -3,8 +3,9 @@
 import json
 import logging
 from abc import ABC, abstractmethod
-from datetime import datetime, date
+from datetime import date, datetime
 from typing import List, Optional
+
 from email_summarizer.models import CleanedEmail, EmailSummary
 
 logger = logging.getLogger(__name__)
@@ -383,6 +384,7 @@ class LocalSummarizer(SummarizerEngine):
             List of date objects
         """
         import re
+
         from dateutil import parser
 
         deadlines = []

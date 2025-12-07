@@ -1,17 +1,18 @@
 """Command-line interface for Email Summarizer."""
 
-import sys
 import argparse
+import sys
 from pathlib import Path
-from email_summarizer.config import ConfigManager
+
 from email_summarizer.auth import create_authenticator
+from email_summarizer.config import ConfigManager
 from email_summarizer.fetcher import create_fetcher
-from email_summarizer.preprocessor import EmailPreprocessor
-from email_summarizer.summarizer import create_summarizer
-from email_summarizer.storage import StorageManager
 from email_summarizer.orchestrator import EmailOrchestrator
-from email_summarizer.web import run_server
+from email_summarizer.preprocessor import EmailPreprocessor
+from email_summarizer.storage import StorageManager
+from email_summarizer.summarizer import create_summarizer
 from email_summarizer.utils.logging_config import setup_logging
+from email_summarizer.web import run_server
 
 
 def setup_wizard():

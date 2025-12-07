@@ -6,12 +6,14 @@ from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
-from google_auth_oauthlib.flow import Flow
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials as GoogleCredentials
+from google_auth_oauthlib.flow import Flow
 from msal import ConfidentialClientApplication
-from email_summarizer.models import Credentials, OAuthConfig
+
 from email_summarizer.crypto import get_encryption_manager
+from email_summarizer.models import Credentials, OAuthConfig
 
 
 class OAuthAuthenticator(ABC):

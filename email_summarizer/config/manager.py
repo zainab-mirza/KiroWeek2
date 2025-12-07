@@ -1,19 +1,15 @@
 """Configuration management with secure credential storage."""
 
 import os
-import yaml
-import keyring
 from pathlib import Path
-from typing import Optional, Dict, Any
-from email_summarizer.models import (
-    Config,
-    OAuthConfig,
-    FetchRules,
-    SummarizerConfig,
-    ServerConfig,
-    StorageConfig,
-    PrivacyConfig,
-)
+from typing import Any, Dict, Optional
+
+import keyring
+import yaml
+
+from email_summarizer.models import (Config, FetchRules, OAuthConfig,
+                                     PrivacyConfig, ServerConfig,
+                                     StorageConfig, SummarizerConfig)
 
 
 class ConfigManager:

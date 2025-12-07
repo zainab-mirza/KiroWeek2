@@ -1,11 +1,7 @@
 """Email summarization engine module."""
 
-from .engine import (
-    SummarizerEngine,
-    RemoteSummarizer,
-    LocalSummarizer,
-    create_summarizer,
-)
+from .engine import (LocalSummarizer, RemoteSummarizer, SummarizerEngine,
+                     create_summarizer)
 
 __all__ = [
     "SummarizerEngine",
