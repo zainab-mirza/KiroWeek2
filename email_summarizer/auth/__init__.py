@@ -4,12 +4,12 @@ from .authenticator import (
     OAuthAuthenticator,
     GmailAuthenticator,
     OutlookAuthenticator,
-    create_authenticator
+    create_authenticator,
 )
 
 __all__ = [
-    'OAuthAuthenticator',
-    'GmailAuthenticator',
-    'OutlookAuthenticator',
-    'create_authenticator'
+    "OAuthAuthenticator",
+    "GmailAuthenticator",
+    "OutlookAuthenticator",
+    "create_authenticator",
 ]

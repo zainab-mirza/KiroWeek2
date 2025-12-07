@@ -2,4 +2,4 @@
 
 from .cleaner import EmailPreprocessor
 
-__all__ = ['EmailPreprocessor']
+__all__ = ["EmailPreprocessor"]

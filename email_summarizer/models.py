@@ -8,18 +8,21 @@ from enum import Enum
 
 class EmailProvider(Enum):
     """Supported email providers."""
+
     GMAIL = "gmail"
     OUTLOOK = "outlook"
 
 
 class SummarizerEngine(Enum):
     """Supported summarizer engines."""
+
     LOCAL = "local"
     REMOTE = "remote"
 
 
 class FetchMode(Enum):
     """Email fetch modes."""
+
     UNREAD = "unread"
     LAST_N_DAYS = "last_n_days"
     ALL = "all"
@@ -28,6 +31,7 @@ class FetchMode(Enum):
 @dataclass
 class OAuthConfig:
     """OAuth configuration."""
+
     client_id_ref: str
     client_secret_ref: str
     redirect_uri: str
@@ -50,6 +54,7 @@ class OAuthConfig:
 @dataclass
 class FetchRules:
     """Email fetching rules."""
+
     mode: str  # "unread", "last_n_days", "all"
     max_messages: int = 20
     days_back: int = 7
@@ -69,6 +74,7 @@ class FetchRules:
 @dataclass
 class SummarizerConfig:
     """Summarizer configuration."""
+
     engine: str  # "local" or "remote"
     local_model: Optional[str] = None
     remote_provider: Optional[str] = None
@@ -94,6 +100,7 @@ class SummarizerConfig:
 @dataclass
 class ServerConfig:
     """Web server configuration."""
+
     port: int = 8080
     host: str = "localhost"
 
@@ -110,6 +117,7 @@ class ServerConfig:
 @dataclass
 class StorageConfig:
     """Storage configuration."""
+
     summaries_dir: str = "./summaries"
     encrypt_bodies: bool = True
     use_sqlite_index: bool = True
@@ -125,6 +133,7 @@ class StorageConfig:
 @dataclass
 class PrivacyConfig:
     """Privacy and security configuration."""
+
     remote_llm_consent: bool = False
     log_rotation_days: int = 7
 
@@ -139,6 +148,7 @@ class PrivacyConfig:
 @dataclass
 class Config:
     """Main application configuration."""
+
     email_provider: str
     oauth: OAuthConfig
     fetch_rules: FetchRules
@@ -150,23 +160,24 @@ class Config:
     def validate(self) -> List[str]:
         """Validate entire configuration."""
         errors = []
-        
+
         if self.email_provider not in ["gmail", "outlook"]:
             errors.append(f"Invalid email_provider: {self.email_provider}")
-        
+
         errors.extend(self.oauth.validate())
         errors.extend(self.fetch_rules.validate())
         errors.extend(self.summarizer.validate())
         errors.extend(self.server.validate())
         errors.extend(self.storage.validate())
         errors.extend(self.privacy.validate())
-        
+
         return errors
 
 
 @dataclass
 class Credentials:
     """OAuth credentials."""
+
     provider: str
     access_token: str
     refresh_token: str
@@ -181,6 +192,7 @@ class Credentials:
 @dataclass
 class Attachment:
     """Email attachment metadata."""
+
     filename: str
     size: int
     mime_type: str
@@ -189,6 +201,7 @@ class Attachment:
 @dataclass
 class RawEmail:
     """Raw email data from provider."""
+
     message_id: str
     sender: str
     subject: str
@@ -217,6 +230,7 @@ class RawEmail:
 @dataclass
 class CleanedEmail:
     """Cleaned and preprocessed email."""
+
     message_id: str
     sender: str
     subject: str
@@ -247,6 +261,7 @@ class CleanedEmail:
 @dataclass
 class EmailSummary:
     """Email summary with extracted information."""
+
     message_id: str
     sender: str
     subject: str
@@ -256,7 +271,7 @@ class EmailSummary:
     deadlines: List[date]
     created_at: datetime
     model_used: str
-    feedback: Optional['Feedback'] = None
+    feedback: Optional["Feedback"] = None
 
     def validate(self) -> List[str]:
         """Validate email summary."""
@@ -281,6 +296,7 @@ class EmailSummary:
 @dataclass
 class Feedback:
     """User feedback on a summary."""
+
     rating: int  # 1 for thumbs up, -1 for thumbs down
     comment: Optional[str] = None
     created_at: datetime = field(default_factory=datetime.now)
@@ -298,6 +314,7 @@ class Feedback:
 @dataclass
 class ProcessingError:
     """Error that occurred during processing."""
+
     message_id: Optional[str]
     error_type: str
     error_message: str
@@ -307,6 +324,7 @@ class ProcessingError:
 @dataclass
 class ProcessingResult:
     """Result of email processing operation."""
+
     total_fetched: int
     total_processed: int
     total_failed: int

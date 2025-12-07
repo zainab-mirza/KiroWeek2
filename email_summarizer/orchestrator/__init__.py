@@ -2,4 +2,4 @@
 
 from .processor import EmailOrchestrator
 
-__all__ = ['EmailOrchestrator']
+__all__ = ["EmailOrchestrator"]
